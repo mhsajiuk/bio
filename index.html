@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>@username — Bio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --border: rgba(255,255,255,0.07);
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --accent: #c8f564;
+      --accent2: #8b5cf6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-x: hidden;
+    }
+
+    /* Background blobs */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      width: 500px; height: 500px;
+      background: var(--accent2);
+      top: -150px; left: -150px;
+    }
+    body::after {
+      width: 400px; height: 400px;
+      background: var(--accent);
+      bottom: -100px; right: -100px;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04);
+      animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.2rem;
+      color: #fff;
+      letter-spacing: -1px;
+      box-shadow: 0 0 0 4px rgba(139,92,246,0.25), 0 0 40px rgba(200,245,100,0.15);
+      position: relative;
+    }
+
+    .avatar::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent), var(--accent2), var(--accent));
+      z-index: -1;
+      animation: spin 4s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      text-align: center;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.3rem;
+      line-height: 1.15;
+    }
+
+    .handle {
+      text-align: center;
+      color: var(--accent);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .bio {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-bottom: 2rem;
+    }
+
+    .tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 0.3rem 0.85rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .tag:hover {
+      background: rgba(200,245,100,0.08);
+      border-color: rgba(200,245,100,0.3);
+      color: var(--accent);
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.9rem 1.1rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.25s cubic-bezier(0.16,1,0.3,1);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .link-item:nth-child(1) { animation-delay: 0.1s; }
+    .link-item:nth-child(2) { animation-delay: 0.18s; }
+    .link-item:nth-child(3) { animation-delay: 0.26s; }
+    .link-item:nth-child(4) { animation-delay: 0.34s; }
+    .link-item:nth-child(5) { animation-delay: 0.42s; }
+
+    .link-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03));
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .link-item:hover {
+      border-color: rgba(200,245,100,0.3);
+      transform: translateX(4px);
+      background: rgba(200,245,100,0.04);
+    }
+
+    .link-item:hover::before { opacity: 1; }
+
+    .link-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .link-label { flex: 1; }
+    .link-label small {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 1px;
+    }
+
+    .link-arrow {
+      color: var(--muted);
+      font-size: 1rem;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .link-item:hover .link-arrow {
+      transform: translateX(3px);
+      color: var(--accent);
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="avatar-wrap">
+      <div class="avatar">MH</div>
+    </div>
+    <h1 class="name">Your Name</h1>
+    <div class="handle">@username</div>
+    <p class="bio">
+      Designer &amp; developer crafting beautiful digital experiences.<br>
+      Based in Jakarta 🇮🇩
+    </p>
+    <div class="tags">
+      <span class="tag">Design</span>
+      <span class="tag">Development</span>
+      <span class="tag">Creative</span>
+      <span class="tag">Open to work</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="links">
+      <a href="#" class="link-item">
+        <div class="link-icon">𝕏</div>
+        <div class="link-label">
+          Twitter / X
+          <small>@username</small>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="#" class="link-item">
+        <div class="link-icon">in</div>
+        <div class="link-label">
+          LinkedIn
+          <small>Connect with me</small>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="#" class="link-item">
+        <div class="link-icon">⬡</div>
+        <div class="link-label">
+          GitHub
+          <small>Check my projects</small>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="#" class="link-item">
+        <div class="link-icon">✦</div>
+        <div class="link-label">
+          Portfolio
+          <small>View my work</small>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+      <a href="#" class="link-item">
+        <div class="link-icon">✉</div>
+        <div class="link-label">
+          Email me
+          <small>hello@youremail.com</small>
+        </div>
+        <span class="link-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="footer">made with ♥ in jakarta</div>
+  </div>
+</body>
+</html>
